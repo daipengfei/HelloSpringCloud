@@ -1,13 +1,15 @@
 package com.hello.spring.kafka;
 
-import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Component;
+import org.springframework.util.concurrent.ListenableFuture;
 
 import javax.annotation.Resource;
 import java.util.Date;
 import java.util.UUID;
+import java.util.concurrent.ExecutionException;
 
 /****************************************
  *
@@ -16,16 +18,16 @@ import java.util.UUID;
  ***************************************/
 
 @Component
-public class Sender implements InitializingBean{
+public class Sender implements InitializingBean {
     @Resource
-    private KafkaTemplate<Object, String> kafkaTemplate;
+    private KafkaTemplate<String, Message> kafkaTemplate;
 
-    public void sendMessage(){
+    public void sendMessage() {
         Message m = new Message();
         m.setId(System.currentTimeMillis());
         m.setMsg(UUID.randomUUID().toString());
         m.setSendTime(new Date());
-        kafkaTemplate.send("test1" ,JSON.toJSONString(m));
+        kafkaTemplate.send("test1", m);
     }
 
     @Override
@@ -34,7 +36,9 @@ public class Sender implements InitializingBean{
                 new Runnable() {
                     @Override
                     public void run() {
-                        while(true){
+                        int i = 0;
+                        while (i < 10) {
+                            i++;
                             sendMessage();
                             try {
                                 Thread.sleep(1000);
@@ -46,4 +50,5 @@ public class Sender implements InitializingBean{
                 }
         ).start();
     }
+
 }
