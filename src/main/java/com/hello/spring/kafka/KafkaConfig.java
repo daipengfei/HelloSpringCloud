@@ -39,6 +39,7 @@ public class KafkaConfig {
         ConcurrentKafkaListenerContainerFactory<String, Message> factory
                 = new ConcurrentKafkaListenerContainerFactory<>();
         factory.setConsumerFactory(kafkaConsumerFactory());
+        factory.setBatchListener(true);
         factory.setRecordFilterStrategy(
                 record -> record.value().getMsg().contains("14974625768"));
         return factory;

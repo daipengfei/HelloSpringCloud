@@ -2,6 +2,7 @@ package com.hello.spring.kafka;
 
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.support.Acknowledgment;
 import org.springframework.kafka.support.KafkaHeaders;
 import org.springframework.messaging.handler.annotation.Header;
 import org.springframework.messaging.handler.annotation.Payload;
@@ -26,15 +27,13 @@ public class Receiver {
         System.out.println(data.partition() + " :: " + data.value() + Thread.currentThread().getId());
     }
 
-//    @KafkaListener(topics = "test-topic")
+    @KafkaListener(topics = "test-topic")
     public void listenWithHeaders(
-            @Payload String message,
-            @Header(KafkaHeaders.RECEIVED_PARTITION_ID) int partition) throws InterruptedException {
+            String message, Acknowledgment ack) throws InterruptedException {
         count++;
         System.out.println(message);
-        if(1 == 1)
-        throw new RuntimeException("hi!");
         System.out.println(count);
+        ack.acknowledge();
 //        System.out.println(
 //                "Received Message: " + message
 //                        + "from partition: " + partition + " :: " + new Date());
