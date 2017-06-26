@@ -1,7 +1,15 @@
 package com.hello.spring;
 
-import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.builder.SpringApplicationBuilder;
+import org.springframework.context.ApplicationContextInitializer;
+import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.core.env.PropertiesPropertySource;
+import org.springframework.core.io.Resource;
+import org.springframework.kafka.annotation.EnableKafka;
+
+import java.io.IOException;
+import java.util.Properties;
 
 /****************************************
  *
@@ -12,8 +20,31 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 @SpringBootApplication
 public class Application {
 
-    public static void main(String[] args) {
-        SpringApplication.run(Application.class,args);
+    public static void main(String[] args) throws InterruptedException {
+        new SpringApplicationBuilder(Application.class).
+                initializers(new Initializer()).
+                build().run(args);
+        Thread.sleep(Integer.MAX_VALUE);
+    }
+
+
+    private static class Initializer implements ApplicationContextInitializer<ConfigurableApplicationContext> {
+
+        @Override
+        public void initialize(ConfigurableApplicationContext applicationContext) {
+            try {
+                Resource resources = applicationContext.
+                        getResource("config/config.properties");
+                Properties properties = new Properties();
+                properties.load(resources.getInputStream());
+                PropertiesPropertySource source =
+                        new PropertiesPropertySource("config", properties);
+                applicationContext.getEnvironment().getPropertySources().addLast(source);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+        }
     }
 
 }

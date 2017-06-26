@@ -1,5 +1,6 @@
 package com.hello.spring.kafka;
 
+import com.alibaba.fastjson.JSON;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
@@ -20,32 +21,29 @@ import java.util.concurrent.ExecutionException;
 @Component
 public class Sender implements InitializingBean {
     @Resource
-    private KafkaTemplate<String, Message> kafkaTemplate;
+    private KafkaTemplate<String, String> kafkaTemplate;
 
-    public void sendMessage() {
+    private void sendMessage() {
         Message m = new Message();
         m.setId(System.currentTimeMillis());
         m.setMsg(UUID.randomUUID().toString());
         m.setSendTime(new Date());
-        kafkaTemplate.send("test1", m);
+        kafkaTemplate.send("test-topic", JSON.toJSONString(m));
     }
 
     @Override
     public void afterPropertiesSet() throws Exception {
         new Thread(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        int i = 0;
-                        while (i < 10) {
-                            i++;
-                            sendMessage();
-                            try {
-                                Thread.sleep(1000);
-                            } catch (InterruptedException e) {
-                                Thread.currentThread().interrupt();
-                            }
-                        }
+                () -> {
+                    int i = 0;
+                    while (i < 10) {
+                        i++;
+                        sendMessage();
+//                        try {
+//                            Thread.sleep(100);
+//                        } catch (InterruptedException e) {
+//                            Thread.currentThread().interrupt();
+//                        }
                     }
                 }
         ).start();

@@ -1,11 +1,7 @@
 package com.hello.spring.kafka;
 
 import org.apache.kafka.common.serialization.StringDeserializer;
-import org.springframework.beans.factory.DisposableBean;
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties;
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.kafka.annotation.EnableKafka;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
 import org.springframework.kafka.core.ConsumerFactory;
 import org.springframework.kafka.core.DefaultKafkaConsumerFactory;
@@ -19,8 +15,8 @@ import java.io.Closeable;
  *
  ***************************************/
 
-@Configuration
-@EnableKafka
+//@Configuration
+//@EnableKafka
 public class KafkaConfig {
 
     private KafkaProperties kafkaProperties;
@@ -29,31 +25,31 @@ public class KafkaConfig {
         this.kafkaProperties = kafkaProperties;
     }
 
-    @Bean
-    public ConsumerFactory<String, Message> consumerFactory() {
-        return new DefaultKafkaConsumerFactory<String, Message>(
+    //    @Bean
+    public ConsumerFactory<String, Message> kafkaConsumerFactory() {
+        return new DefaultKafkaConsumerFactory<>(
                 kafkaProperties.buildConsumerProperties(),
                 new StringDeserializer(),
-                new JsonDeserializer<Message>(Message.class));
+                new JsonDeserializer<>(Message.class));
     }
 
 
-    @Bean
+    //    @Bean
     public ConcurrentKafkaListenerContainerFactory kafkaListenerContainerFactory() {
         ConcurrentKafkaListenerContainerFactory<String, Message> factory
                 = new ConcurrentKafkaListenerContainerFactory<>();
-        factory.setConsumerFactory(consumerFactory());
+        factory.setConsumerFactory(kafkaConsumerFactory());
         factory.setRecordFilterStrategy(
                 record -> record.value().getMsg().contains("14974625768"));
         return factory;
     }
 
-    @Bean
+    //    @Bean
     public TestBean testBean() {
         return new TestBean();
     }
 
-    public static class TestBean implements Closeable{
+    public static class TestBean implements Closeable {
         public void close() {
             System.out.println("close test bean!!!!!");
         }
