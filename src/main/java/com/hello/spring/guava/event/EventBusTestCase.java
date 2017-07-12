@@ -2,7 +2,6 @@ package com.hello.spring.guava.event;
 
 import com.google.common.eventbus.AsyncEventBus;
 import com.google.common.eventbus.EventBus;
-import org.junit.Test;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -18,7 +17,6 @@ public class EventBusTestCase {
 
     private int x = 0;
 
-    @Test
     public void test() throws InterruptedException {
         syncEvent();
 //        asynEvent();

@@ -1,7 +1,6 @@
 package com.hello.spring.guava.future;
 
 import com.google.common.util.concurrent.*;
-import org.junit.Test;
 
 import javax.annotation.Nullable;
 import java.util.concurrent.*;
@@ -51,7 +50,6 @@ public class CallBackExecutor {
         System.out.println("hi guava");
     }
 
-    @Test
     public void testCompleteService() {
         java();
     }

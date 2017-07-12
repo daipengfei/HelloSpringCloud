@@ -8,7 +8,6 @@ import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.io.Resource;
-import org.springframework.kafka.annotation.EnableKafka;
 
 import java.io.IOException;
 import java.util.Properties;
