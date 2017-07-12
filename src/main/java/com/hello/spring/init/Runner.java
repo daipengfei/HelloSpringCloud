@@ -22,7 +22,7 @@ public class Runner implements ApplicationRunner {
 
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        System.out.println(configKey + " -- " + loadKey + " -- " + key) ;
+        System.out.println(configKey + " -- " + loadKey + " -- " + key);
     }
 
     public String getConfigKey() {
