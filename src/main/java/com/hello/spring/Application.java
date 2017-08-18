@@ -6,6 +6,7 @@ import org.springframework.boot.autoconfigure.data.redis.RedisRepositoriesAutoCo
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.context.ApplicationContextInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.ImportResource;
 import org.springframework.core.env.PropertiesPropertySource;
 import org.springframework.core.io.Resource;
 
@@ -19,6 +20,7 @@ import java.util.Properties;
  ***************************************/
 
 @SpringBootApplication(exclude = {RedisAutoConfiguration.class, RedisRepositoriesAutoConfiguration.class})
+@ImportResource("classpath:spring/application-context.xml")
 public class Application {
 
     public static void main(String[] args) throws InterruptedException {
