@@ -1,6 +1,8 @@
 package com.hello.spring.entity;
 
 
+import com.alibaba.fastjson.JSON;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
@@ -26,5 +28,10 @@ public class Parent {
                 }
             });
         }
+    }
+
+    public static void main(String[] args) {
+        String s = JSON.toJSONString(null);
+        System.out.println(s);
     }
 }
