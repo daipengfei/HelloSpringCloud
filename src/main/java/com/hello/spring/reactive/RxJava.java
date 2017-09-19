@@ -16,8 +16,9 @@ public class RxJava {
                 .subscribe(new Consumer<String>() {
                     @Override
                     public void accept(@NonNull String s) throws Exception {
-                        System.out.println(Thread.currentThread());
+                        System.out.println(Thread.currentThread().hashCode());
                         System.out.println(s);
+                        Thread.sleep(1000);
                     }
                 });
         Thread.sleep(Integer.MAX_VALUE);
